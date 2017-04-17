@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
+import { ShoppingListService } from "../services/shopping-list.service";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,13 @@ import { MyApp } from './app.component';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {
+      platforms: {
+        ios: {
+          backButtonText: 'Voltar'
+        }
+      }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -21,7 +28,8 @@ import { MyApp } from './app.component';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ShoppingListService
   ]
 })
 export class AppModule {}
