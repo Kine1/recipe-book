@@ -20,6 +20,8 @@ export class ShoppingList {
     this.loadItens();
   }
 
+  //Aqui utilizamos a maneira de criar form diretamente no HTML e pegamos a
+  // referência. Template Driven Form
   onAddItem(form: NgForm) {
     this.shoppingService.addItem(form.value.ingredientName, form.value.amount);
     form.reset();
