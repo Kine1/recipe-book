@@ -26,7 +26,7 @@
 
       <ion-item>
         <ion-label floating>Dificuldade</ion-label>
-        <ion-select formControlName="dificulty">
+        <ion-select formControlName="difficulty">
           <ion-option
             *ngFor="let option of selectOptions"
             [value]="option">{{ option }}</ion-option>
@@ -48,7 +48,7 @@
       </ion-item>
     </ion-list>
 
-    <button type="submit" ion-button block>{{ mode }} Receita</button>
+    <button type="submit" ion-button block [disabled]="!recipeForm.valid">{{ mode }} Receita</button>
   </form>
 
 </ion-content>
