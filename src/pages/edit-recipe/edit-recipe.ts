@@ -5,6 +5,7 @@ import {
 } from 'ionic-angular';
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { RecipesService } from "../../services/recipes.service";
+import { RecipeModel } from "../../models/recipe.model";
 
 @IonicPage()
 @Component({
@@ -15,6 +16,8 @@ export class EditRecipe implements OnInit {
   mode = 'Nova';
   selectOptions = ['Fácil', 'Médio', 'Difícil'];
   recipeForm: FormGroup;
+  recipe: RecipeModel;
+  index: number;
 
   constructor(private navParams: NavParams,
               private actionSheetController: ActionSheetController,
@@ -26,6 +29,10 @@ export class EditRecipe implements OnInit {
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
+    if (this.mode == 'Edição') {
+      this.recipe = this.navParams.get('recipe');
+      this.index = this.navParams.get('index');
+    }
     this.initializeForm();
   }
 
@@ -38,11 +45,25 @@ export class EditRecipe implements OnInit {
   //Em cada input devemos indicar através de formControlName a qual controle
   //cada input pertence.
   private initializeForm() {
+    let title = null;
+    let description = null;
+    let difficulty = 'Médio';
+    let ingredients = [];
+
+    if (this.mode == 'Edição') {
+      title = this.recipe.title;
+      description = this.recipe.description;
+      difficulty = this.recipe.difficulty;
+      for (let ingredient of this.recipe.ingredients) {
+        ingredients.push(new FormControl(ingredient.name, Validators.required));
+      }
+    }
+
     this.recipeForm = new FormGroup({
-      title: new FormControl(null, Validators.required),
-      description: new FormControl(null, Validators.required),
-      difficulty: new FormControl('Médio', Validators.required),
-      ingredients: new FormArray([])
+      title: new FormControl(title, Validators.required),
+      description: new FormControl(description, Validators.required),
+      difficulty: new FormControl(difficulty, Validators.required),
+      ingredients: new FormArray(ingredients)
     });
   }
 
@@ -51,10 +72,14 @@ export class EditRecipe implements OnInit {
     let ingredients = [];
     if (value.ingredients.length > 0) {
       ingredients = value.ingredients.map(name => {
-        return {name: name, amount: 1}
+        return {name: name, amount: 1};
       });
     }
-    this.recipesService.addRecipe(value.title, value.description, value.difficulty, value.ingredients);
+    if (this.mode == 'Edição') {
+      this.recipesService.updateRecipe(this.index, value.title, value.description, value.difficulty, ingredients);
+    } else {
+      this.recipesService.addRecipe(value.title, value.description, value.difficulty, ingredients);
+    }
     this.recipeForm.reset();
     this.navCtrl.popToRoot();
   }

@@ -1,11 +1,11 @@
-import { Recipe } from "../models/recipe";
+import { RecipeModel } from "../models/recipe.model";
 import { Ingredient } from "../models/ingredient";
 
 export class RecipesService {
-  private recipes: Recipe[] = [];
+  private recipes: RecipeModel[] = [];
 
   addRecipe(title: string, description: string, difficulty: string, ingredients: Ingredient[]) {
-    let recipe = new Recipe(title, description, difficulty, ingredients);
+    let recipe = new RecipeModel(title, description, difficulty, ingredients);
     this.recipes.push(recipe);
     console.log(this.recipes);
   }
@@ -16,7 +16,7 @@ export class RecipesService {
   }
 
   updateRecipe (index: number, title: string, description: string, difficulty: string, ingredients: Ingredient[]) {
-    this.recipes[index] = new Recipe(title, description, difficulty, ingredients);
+    this.recipes[index] = new RecipeModel(title, description, difficulty, ingredients);
   }
 
   removeRecipe(index: number) {

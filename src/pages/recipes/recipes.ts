@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { Recipe } from "../../models/recipe";
+import { RecipeModel } from "../../models/recipe.model";
 import { RecipesService } from "../../services/recipes.service";
 
 @IonicPage()
@@ -9,7 +9,7 @@ import { RecipesService } from "../../services/recipes.service";
   templateUrl: 'recipes.html',
 })
 export class Recipes {
-  recipes: Recipe[];
+  recipes: RecipeModel[];
 
   constructor(private navCtrl: NavController,
               private recipesService: RecipesService) {
@@ -23,8 +23,8 @@ export class Recipes {
     this.recipes = this.recipesService.getRecipes();
   }
 
-  onLoadRecipe() {
-
+  onLoadRecipe(recipe: RecipeModel, index: number) {
+    this.navCtrl.push('Recipe', {recipe: recipe, index: index});
   }
 
 }

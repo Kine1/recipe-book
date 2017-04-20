@@ -1,6 +1,6 @@
 import { Ingredient } from "./ingredient";
 
-export class Recipe {
+export class RecipeModel {
   constructor(public title: string,
               public description: string,
               public difficulty: string,
